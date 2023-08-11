@@ -1,24 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Success } from "./components/Succes/Success";
+import { Users } from "./components/Users/Users";
+import "./index.scss";
+import { useState, useEffect } from "react";
+import { UsersType } from "./types/types";
+// Тут список пользователей: https://reqres.in/api/users
 
 function App() {
+  const [users, setUsers] = useState<UsersType[] | []>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("https://reqres.in/api/users")
+      .then((res) => res.json())
+      .then((res) => setUsers(res.data))
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+  console.log(users);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Users items={users} isLoading={loading} />
+      {/* <Success /> */}
     </div>
   );
 }
