@@ -1,7 +1,12 @@
-import React from "react";
+import React, { MouseEventHandler } from "react";
 import { UsersType } from "../../types/types";
 
-export const User: React.FC<UsersType> = ({ avatar, email, first_name, id, last_name }) => (
+interface UserProps {
+  onClickInvite: (id: number) => void;
+  isInvited: boolean;
+}
+
+export const User: React.FC<UsersType & UserProps> = ({ avatar, email, first_name, id, last_name, onClickInvite, isInvited }) => (
   <li>
     <div>
       <img className="avatar" src={avatar} alt="User" />
@@ -17,6 +22,6 @@ export const User: React.FC<UsersType> = ({ avatar, email, first_name, id, last_
         </p>
       </div>
     </div>
-    <img className="action" src="/assets/plus.svg" alt="Action" />
+    <img onClick={() => onClickInvite(id)} className="action" src={`/assets/${isInvited ? "minus" : "plus"}.svg`} alt="Action" />
   </li>
 );
